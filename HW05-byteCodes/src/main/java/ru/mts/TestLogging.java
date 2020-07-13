@@ -19,10 +19,15 @@ public class TestLogging implements TestLoggingInterface {
     }
 
     @Override
+    @Log
     public void calculation(int param) {
         this.param = param;
         System.out.println("Executed method: calculation, param: " + param);
     }
 
-    ;
+    @Override
+    public void calculationWithoutLog(int param) {
+        this.param = param;
+        System.out.println("Executed method: calculationWithoutLog, param: " + param);
+    }
 }

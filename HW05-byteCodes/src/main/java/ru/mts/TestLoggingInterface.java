@@ -1,6 +1,6 @@
 package ru.mts;
 
 public interface TestLoggingInterface {
-    @Log
 public void calculation(int param);
+public void calculationWithoutLog(int param);
 }
