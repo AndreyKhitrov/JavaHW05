@@ -7,4 +7,11 @@ public class OneMoreClass implements OneMoreClassInterface {
     public void methodLog(int param) {
         System.out.println("OneMoreClass: " + param);
     }
+
+    @Override
+    @Log
+    public void methodLog1(int param, String param1) {
+        System.out.println("OneMoreClass with first parammeter: " + param + " and second paremeter: " + param1);
+    }
 }
+

@@ -8,28 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyIOC {
-    static ArrayList<Method> loggedMethods;
+    static ArrayList<String> loggedMethods;
     public MyIOC() {
     }
 
-    private static ArrayList<Method> getAnnotationMethods(Method[] methods, Class classAnnotation) {
-        ArrayList<Method> varAnnotationMethod = new ArrayList(10);
+    private static ArrayList<String> getAnnotationMethods(Method[] methods, Class classAnnotation) {
+        ArrayList<String> varAnnotationMethod = new ArrayList(10);
         for (Method method : methods){
             if (method.isAnnotationPresent(classAnnotation)){
-                varAnnotationMethod.add(method);
+                varAnnotationMethod.add(method.getName());
             }
         }
         return  varAnnotationMethod;
     }
 
-    static Object createLogging(Object object) throws Exception {
+    static <T>  T createLogging(T object) throws Exception {
         InvocationHandler handler = new MyInvocationHandler(object);
         loggedMethods= getAnnotationMethods(object.getClass().getDeclaredMethods(), Log.class);
-        return Proxy.newProxyInstance(object.getClass().getClassLoader(), object.getClass().getInterfaces(), handler);
+        return (T) Proxy.newProxyInstance(object.getClass().getClassLoader(), object.getClass().getInterfaces(), handler);
 
     }
 
-    static class MyInvocationHandler implements InvocationHandler {
+    static class MyInvocationHandler<T> implements InvocationHandler {
         private final Object testLogging;
 
         public MyInvocationHandler(Object testLogging) {
@@ -38,11 +38,11 @@ public class MyIOC {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            for (Method method1 : loggedMethods) {
-                if (method1.getName()==method.getName()){
-                    System.out.println("Log method: "+ method.getName()+ " and his argumets: " + args[0]);
+                if (loggedMethods.contains(method.getName())){
+                    for (Object o : args){
+                        System.out.println("Log method: "+ method.getName()+ " and his argumets: " + o);
+                    }
                 }
-            }
                 return method.invoke(testLogging, args);
         }
     }
