@@ -6,13 +6,14 @@ public class Demo {
         TestLoggingInterface loggable = MyIOC.createLogging(original);
 
         loggable.calculation(6);
-
+        loggable.calculation(original.getClass().getName());
+        loggable.calculation(original.getClass().getName(),12);
         loggable.calculationWithoutLog(6);
+
         OneMoreClassInterface originalTest = new OneMoreClass();
         OneMoreClassInterface loggableTest = MyIOC.createLogging(originalTest);
 
         loggableTest.methodLog(10);
-        loggableTest.methodLog1(123, loggableTest.getClass().getName());
-
+        loggableTest.methodLog1(12, loggableTest.getClass().getName());
     }
 }
